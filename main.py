@@ -1,6 +1,10 @@
 import os
 import sys
 import socket
+import subprocess
+import time
+from termcolor import colored
+
 sys.path.append("scripts")
 
 from internet import test_internet_speed
@@ -12,11 +16,19 @@ from improve_internet_speed import improve_internet_speed
 from change_dns_servers import change_dns_servers
 from check_dns_servers import check_dns_servers
 from remove_useless_files import remove_useless_files
+from scan_wifi_networks import scan_wifi_networks
+from show_interfaces import show_interfaces
+from ping import ping_host
 
 def main():
+    # print a cool message and wait for a few seconds
+    print(colored("Welcome to Sys-Speed-Check!\n\n", "green"))
+    print("This program will test and optimize your system for maximum speed and security.\n\n")
+    time.sleep(1)
+
     while True:
         # ask the user what test they want to run
-        print("Welcome to SSC! What would you like to do? Enter the corresponding number:")
+        print("What would you like to do? Enter the corresponding number:")
         print("1. Test internet speed")
         print("2. Improve internet speed")
         print("3. Test CPU stress")
@@ -26,7 +38,10 @@ def main():
         print("7. Change DNS servers")
         print("8. Check DNS servers")
         print("9. Remove useless files")
-        print("10. Exit")
+        print("10. Scan available WiFi networks")
+        print("11. Show available network interfaces")
+        print("12. Ping a website")
+        print("13. Exit")
         selection = input("> ")
 
         # execute the selected option
@@ -53,6 +68,14 @@ def main():
         elif selection == "9":
             remove_useless_files()
         elif selection == "10":
+            scan_wifi_networks()
+        elif selection == "11":
+            show_interfaces()
+        elif selection == "12":
+            target = input("Enter a website to ping: ")
+            result = ping_host(target)
+            print(result)
+        elif selection == "13":
             sys.exit()
 
         # ask the user if they want to return to the main menu or exit
