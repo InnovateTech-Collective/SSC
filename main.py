@@ -5,7 +5,8 @@ import subprocess
 import time
 from termcolor import colored
 
-sys.path.append("scripts")
+scripts_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'scripts'))
+sys.path.insert(0, scripts_dir)
 
 from internet import test_internet_speed
 from cpu import test_cpu_stress, get_cpu_score
@@ -18,13 +19,15 @@ from check_dns_servers import check_dns_servers
 from remove_useless_files import remove_useless_files
 from scan_wifi_networks import scan_wifi_networks
 from show_interfaces import show_interfaces
-from ping import ping_host
+from backup import backup_files
+from ping import ping
+
 
 def main():
-    # print a cool message and wait for a few seconds
-    print(colored("Welcome to Sys-Speed-Check!\n\n", "green"))
-    print("This program will test and optimize your system for maximum speed and security.\n\n")
-    time.sleep(1)
+    # Display welcome message
+    print(colored("Welcome to Sys-Speed-Check!", "green"))
+    print(colored("Let's optimize your system!", "green"))
+    print()
 
     while True:
         # ask the user what test they want to run
@@ -41,7 +44,8 @@ def main():
         print("10. Scan available WiFi networks")
         print("11. Show available network interfaces")
         print("12. Ping a website")
-        print("13. Exit")
+        print("13. Backup important files")
+        print("14. Exit")
         selection = input("> ")
 
         # execute the selected option
@@ -72,18 +76,23 @@ def main():
         elif selection == "11":
             show_interfaces()
         elif selection == "12":
-            target = input("Enter a website to ping: ")
-            result = ping_host(target)
+            host = input("Enter a website to ping: ")
+            result = ping(host)
             print(result)
         elif selection == "13":
+            source_dir = input("Enter the path of the source directory to backup: ")
+            dest_dir = input("Enter the path of the destination directory to backup: ")
+            backup_files(source_dir, dest_dir)
+        elif selection == "14":
             sys.exit()
+
+        # ask the user if they want to return to the main menu or exit
+
 
         # ask the user if they want to return to the main menu or exit
         print()
         choice = input("Press Enter to return to the main menu or type 'exit' to quit: ")
         print()
-
-        # clear the screen if the user chooses to return to the main menu
         if choice == "" or choice.lower() == "exit":
             if os.name == "nt":
                 os.system("cls")
@@ -94,3 +103,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
